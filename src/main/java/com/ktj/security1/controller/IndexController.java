@@ -1,6 +1,9 @@
 package com.ktj.security1.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.annotation.Secured;
+import org.springframework.security.access.prepost.PostAuthorize;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -63,6 +66,19 @@ public class IndexController {
 		userRepository.save(user);//회원가입은 잘됨. 비밀번호:1234=>security 로그인을 할 수 없음.(비번이 암호화가 안되서)
 		return "join";
 	}	
+	
+	@Secured("ROLE_ADMIN")
+	@GetMapping("/info")
+	public @ResponseBody String info() {
+		return "개인정보";
+	}
+	
+	@PreAuthorize("hasRole('ROLE_ADMIN') or hasRole('ROLE_MANAGER')")
+	//@PostAuthorize => 메소드가 종료된후 처리.. 
+	@GetMapping("/data")
+	public @ResponseBody String data() {
+		return "Data정보";
+	}
 	
 
 }
