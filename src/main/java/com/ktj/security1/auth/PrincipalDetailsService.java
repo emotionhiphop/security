@@ -1,6 +1,7 @@
 package com.ktj.security1.auth;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -22,6 +23,7 @@ public class PrincipalDetailsService implements UserDetailsService {
 	//만약 다른 명칭을 사용하고 싶다면 설정(SecurityConfig.java)에서 .usernameParameter("username2") 변경하면 된다.  
 	
 	//시큐리티 session(내부 Authentication(내부 UserDetails))
+	// 함수가 종료시에 @AuthenticationPrincipal 이노테이션이 만들어진다.
 	@Override
 	public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
 		
