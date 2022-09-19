@@ -2,9 +2,11 @@
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Map;
 
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.oauth2.core.user.OAuth2User;
 
 import com.ktj.security1.model.User;
 
@@ -16,12 +18,20 @@ import com.ktj.security1.model.User;
 
 //Security Session => Authentication => UserDetails(PricipalDetails)
 
-public class PrincipalDetails implements UserDetails {
+//일반로긴, OAuth2로긴 모두를 담는 object를 생성
+public class PrincipalDetails implements UserDetails, OAuth2User {
 	
 	private User user;//컴포지션
 	
+	private Map<String, Object> attributes;
+	
 	public PrincipalDetails(User user) {
 		this.user = user;
+	}
+	
+	public PrincipalDetails(User user, Map<String, Object>attributes) {
+		this.user = user;
+		this.attributes = attributes;
 	}
 	
 	//해당 유저의 권한을 리턴
@@ -40,6 +50,10 @@ public class PrincipalDetails implements UserDetails {
 		});
 		
 		return collect;
+	}
+	
+	public User getUser() {
+		return user;
 	}
 
 	@Override
@@ -76,6 +90,19 @@ public class PrincipalDetails implements UserDetails {
 	public boolean isEnabled() {
 		// 예 > 일년동안 로그인이 안되면 휴면계정으로 .. false 처리..
 		return true;
+	}
+     
+	//여기부터는 OAuth2User에서 override
+	@Override
+	public Map<String, Object> getAttributes() {
+		// TODO Auto-generated method stub
+		return attributes;
+	}
+
+	@Override
+	public String getName() {
+		// TODO Auto-generated method stub
+		return (String)attributes.get("sub");
 	}
 
 	

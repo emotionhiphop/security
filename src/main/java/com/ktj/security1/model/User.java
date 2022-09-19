@@ -9,12 +9,33 @@ import javax.persistence.Id;
 
 import org.hibernate.annotations.CreationTimestamp;
 
+import lombok.Builder;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 @Entity
 //@Data
+@NoArgsConstructor
 public class User {
 	
+	@Override
+	public String toString() {
+		return "User [id=" + id + ", username=" + username + ", password=" + password + ", email=" + email + ", role="
+				+ role + ", provider=" + provider + ", providerId=" + providerId + ", createDate=" + createDate + "]";
+	}
+	@Id //pk
+	@GeneratedValue(strategy=GenerationType.IDENTITY)
+	private int id;
+	private String username;
+	private String password;
+	private String email;
+	private String role;
+	private String provider;
+	private String providerId;
+	
+	@CreationTimestamp
+	private Timestamp createDate;	
+
 	public int getId() {
 		return id;
 	}
@@ -51,14 +72,18 @@ public class User {
 	public void setCreateDate(Timestamp createDate) {
 		this.createDate = createDate;
 	}
-	@Id //pk
-	@GeneratedValue(strategy=GenerationType.IDENTITY)
-	private int id;
-	private String username;
-	private String password;
-	private String email;
-	private String role;
-	@CreationTimestamp
-	private Timestamp createDate;
+	public String getProvider() {
+		return provider;
+	}
+	public void setProvider(String provider) {
+		this.provider = provider;
+	}
+	public String getProviderId() {
+		return providerId;
+	}
+	public void setProviderId(String providerId) {
+		this.providerId = providerId;
+	}
+
 
 }
